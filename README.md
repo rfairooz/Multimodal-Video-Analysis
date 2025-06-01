@@ -17,15 +17,17 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+
 ### First Approach
-1) Pipeline: offloading all video processing and conversational RAG on gemini (model: 2.0 flash)
-<img width="943" alt="image" src="https://github.com/user-attachments/assets/fb21a186-8eea-450a-bbbb-ff36ade8df2c" />
 
+1. Pipeline: offloading all video processing and conversational RAG on gemini (model: 2.0 flash)
+   <img width="943" alt="image" src="https://github.com/user-attachments/assets/fb21a186-8eea-450a-bbbb-ff36ade8df2c" />
 
-2) Resources Used
+2. Resources Used
+
 - Followed [Google Gemini's docs](https://ai.google.dev/gemini-api/docs/video-understanding) specifically this project [Video-to-Learning App](https://aistudio.google.com/u/1/apps/bundled/video-to-learning-app?showPreview=true). Used their youtube link parser to validate user link and set up a preview.
 - To locally persist chat history in session without reuploading the video, referred to: [Docs](https://ai.google.dev/api/generate-content) [Forum](https://discuss.ai.google.dev/t/what-is-the-best-way-to-persist-chat-history-into-file/3804/7)
+
 ### Demo
 
 ### What's Next?
-

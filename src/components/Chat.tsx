@@ -30,7 +30,11 @@ const Chat = ({ videoUrl }: Props) => {
         },
       });
       if (res && res.text) {
-        setHistory([...history, { role: "user", parts: [{ text: prompt }] }]);
+        setHistory([
+          ...history,
+          { role: "user", parts: [{ text: prompt }] },
+          { role: "model", parts: [{ text: res.text }] },
+        ]);
         setPrompt("");
       }
     } catch (err) {
@@ -46,7 +50,16 @@ const Chat = ({ videoUrl }: Props) => {
       <div className="flex flex-col w-full h-11/12 justify-between items-end ">
         <div className="mt-4 h-full w-full">
           {history.map((chat, key) => (
-            <p key={key}>{chat.parts[0].text}</p>
+            <div
+              key={key}
+              className={`p-3 rounded-xl max-w-8/12 my-2 ${
+                chat.role === "user"
+                  ? "bg-indigo-700 self-end text-right ml-auto w-fit"
+                  : "bg-gray-700 self-start text-left w-fit"
+              }`}
+            >
+              <p className="text-sm text-white">{chat.parts[0].text}</p>
+            </div>
           ))}
         </div>
         <div className="flex w-full justify-between">

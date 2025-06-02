@@ -40,6 +40,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - To hyperlink timestamps and control the video player, I parsed the stamps from model response and used a lightweight version of the [YT iFrame API](https://medium.com/@mihauco/youtube-iframe-api-without-youtube-iframe-api-f0ac5fcf7c74)
 
 ### [Demo](https://youtu.be/gKlFwMip1S8?si=_T9B80X8UFjTakDg)
+<img src="https://pitch-assets-ccb95893-de3f-4266-973c-20049231b248.s3.eu-west-1.amazonaws.com/bc3f7110-8142-4c44-b171-b47aa3a2fd1c?pitch-bytes=321757&pitch-content-type=image%2Fpng" alt="Demo Screenshot" width="80%" />
+
 ### What's Next?
 - Custom RAG to replace the Gemini work: user query and video embeddings, store in DB
 - Try out other LLM models, compare performance

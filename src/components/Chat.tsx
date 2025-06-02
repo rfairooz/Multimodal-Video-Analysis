@@ -1,21 +1,30 @@
 import React from "react";
 import Button from "./Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api } from "@/utils/api";
 import { IoChatbubbleEllipses } from "react-icons/io5";
+import { Timestamp } from "@/utils/types";
 
 type Props = {
   videoUrl: string;
+  setTimestamps?: (stamps: Timestamp[]) => void;
 };
+
 type Message = {
   role: "user" | "model";
   parts: { text: string }[];
 };
 
-const Chat = ({ videoUrl }: Props) => {
+const Chat = ({ videoUrl, setTimestamps }: Props) => {
   const [history, setHistory] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
+
+  useEffect(() => {
+    setHistory([]);
+    setPrompt("");
+    setTimestamps?.([]);
+  }, [videoUrl]);
 
   const startChat = async () => {
     setLoading(true);
@@ -30,6 +39,9 @@ const Chat = ({ videoUrl }: Props) => {
         },
       });
       if (res && res.text) {
+        // if the response has timestamps
+        setTimestamps?.([]);
+        extractTimestampList(res.text);
         setHistory([
           ...history,
           { role: "user", parts: [{ text: prompt }] },
@@ -43,12 +55,32 @@ const Chat = ({ videoUrl }: Props) => {
       setLoading(false);
     }
   };
+  const extractTimestampList = (text: string) => {
+    const matches: Timestamp[] = [];
+    const lines = text.split("\n");
+
+    for (const line of lines) {
+      const cleaned = line.trim().replace(/^[-*]\s*/, "");
+
+      // Match [hh:mm:ss] or [mm:ss]
+      const match = cleaned.match(/^\[(\d{1,2}:\d{2}(?::\d{2})?)\]\s*(.+)$/);
+
+      if (match) {
+        matches.push({ time: match[1], label: match[2] });
+      }
+    }
+
+    if (matches.length) {
+      console.log("Parsed timestamps:", matches);
+      setTimestamps?.(matches);
+    }
+  };
 
   return (
     <div className=" bg-slate-900 rounded-xl p-8 w-full h-[60vh] text-white">
       <IoChatbubbleEllipses className="text-4xl text-slate-400 w-full animate-bounce" />
       <div className="flex flex-col w-full h-11/12 justify-between items-end ">
-        <div className="mt-4 h-full w-full">
+        <div className="mt-4 h-full w-full flex-1 overflow-y-auto">
           {history.map((chat, key) => (
             <div
               key={key}
@@ -70,7 +102,7 @@ const Chat = ({ videoUrl }: Props) => {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
-          <Button loading={loading} text="Start Chat" onClick={startChat} />
+          <Button loading={loading} text="Send" onClick={startChat} />
         </div>
       </div>
     </div>
